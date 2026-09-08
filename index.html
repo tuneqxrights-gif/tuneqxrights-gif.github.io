@@ -14,9 +14,9 @@
       --dark: #080808;
       --dark-2: #111111;
       --dark-3: #1b1b1b;
-      --light: #ffffff;
+      --white: #ffffff;
       --muted: #b7b7b7;
-      --border: rgba(255, 255, 255, 0.12);
+      --border: rgba(255,255,255,.12);
       --max-width: 1180px;
     }
 
@@ -30,7 +30,7 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       background: var(--dark);
-      color: var(--light);
+      color: var(--white);
       line-height: 1.6;
       overflow-x: hidden;
     }
@@ -59,7 +59,8 @@
       margin-bottom: 55px;
     }
 
-    .section-title span {
+    .section-title span,
+    .about-label {
       color: var(--primary);
       text-transform: uppercase;
       font-size: 14px;
@@ -87,14 +88,14 @@
       padding: 14px 25px;
       border-radius: 6px;
       font-weight: bold;
-      transition: 0.3s ease;
+      transition: .3s ease;
       border: 1px solid transparent;
       cursor: pointer;
     }
 
     .btn-primary {
       background: var(--primary);
-      color: white;
+      color: var(--white);
     }
 
     .btn-primary:hover {
@@ -104,7 +105,7 @@
 
     .btn-outline {
       border-color: var(--border);
-      color: white;
+      color: var(--white);
     }
 
     .btn-outline:hover {
@@ -116,11 +117,11 @@
     /* Header */
     header {
       position: fixed;
-      width: 100%;
       top: 0;
       left: 0;
+      width: 100%;
       z-index: 1000;
-      background: rgba(8, 8, 8, 0.9);
+      background: rgba(8,8,8,.92);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
@@ -138,7 +139,8 @@
       letter-spacing: 1px;
     }
 
-    .logo span {
+    .logo span,
+    .highlight {
       color: var(--primary);
     }
 
@@ -150,9 +152,9 @@
     }
 
     .nav-links a {
-      color: #dddddd;
+      color: #ddd;
       font-size: 14px;
-      transition: 0.3s;
+      transition: .3s;
     }
 
     .nav-links a:hover {
@@ -161,7 +163,7 @@
 
     .chat-nav {
       background: var(--primary);
-      color: white !important;
+      color: var(--white) !important;
       padding: 10px 16px;
       border-radius: 5px;
     }
@@ -169,9 +171,9 @@
     .menu-toggle {
       display: none;
       font-size: 28px;
-      color: white;
+      color: var(--white);
       background: none;
-      border: none;
+      border: 0;
       cursor: pointer;
     }
 
@@ -182,13 +184,13 @@
       display: flex;
       align-items: center;
       background:
-        linear-gradient(90deg, rgba(8, 8, 8, 0.96), rgba(8, 8, 8, 0.62)),
-        radial-gradient(circle at 80% 20%, rgba(255, 23, 68, 0.25), transparent 35%);
+        linear-gradient(90deg, rgba(8,8,8,.96), rgba(8,8,8,.62)),
+        radial-gradient(circle at 80% 20%, rgba(255,23,68,.25), transparent 35%);
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.1fr .9fr;
       align-items: center;
       gap: 70px;
     }
@@ -239,7 +241,7 @@
       background: var(--primary);
       border-radius: 50%;
       filter: blur(80px);
-      opacity: 0.3;
+      opacity: .3;
     }
 
     .image-box {
@@ -247,6 +249,9 @@
       width: 100%;
       max-width: 400px;
       min-height: 460px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border: 1px solid var(--border);
       background: var(--dark-3);
       overflow: hidden;
@@ -255,22 +260,15 @@
 
     .image-box img {
       width: 100%;
-      height: 100%;
-      min-height: 460px;
-      object-fit: cover;
-    }
-
-    .img-missing {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--muted);
-      padding: 20px;
+      height: 460px;
+      object-fit: contain;
+      object-position: center;
+      background: var(--dark-3);
     }
 
     /* Services */
-    .services {
+    .services,
+    .contact {
       background: var(--dark-2);
     }
 
@@ -285,7 +283,7 @@
       background: var(--dark-3);
       border: 1px solid var(--border);
       border-radius: 10px;
-      transition: 0.3s;
+      transition: .3s;
     }
 
     .service-card:hover {
@@ -310,20 +308,23 @@
     /* About */
     .about-grid {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: .9fr 1.1fr;
       gap: 70px;
       align-items: center;
     }
 
     .about-image {
       min-height: 450px;
+      background: var(--dark-3);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
     .about-image img {
       width: 100%;
       height: 450px;
-      object-fit: cover;
-      border-radius: 12px;
+      object-fit: contain;
+      object-position: center;
       background: var(--dark-3);
     }
 
@@ -331,10 +332,6 @@
       font-size: clamp(32px, 5vw, 52px);
       line-height: 1.1;
       margin: 12px 0 20px;
-    }
-
-    .about-content h2 span {
-      color: var(--primary);
     }
 
     .about-content p {
@@ -349,7 +346,7 @@
 
     .features li {
       margin: 12px 0;
-      color: #dddddd;
+      color: #ddd;
     }
 
     .features li::before {
@@ -381,13 +378,9 @@
     }
 
     /* Contact */
-    .contact {
-      background: var(--dark-2);
-    }
-
     .contact-grid {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
+      grid-template-columns: .9fr 1.1fr;
       gap: 50px;
       align-items: start;
     }
@@ -402,6 +395,21 @@
       margin-bottom: 25px;
     }
 
+    .contact-details {
+      list-style: none;
+    }
+
+    .contact-details li {
+      margin: 15px 0;
+      color: #ddd;
+    }
+
+    .contact-details strong {
+      color: var(--primary);
+      display: inline-block;
+      width: 85px;
+    }
+
     .contact-image {
       height: 260px;
       margin-top: 30px;
@@ -413,22 +421,9 @@
     .contact-image img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-    }
-
-    .contact-details {
-      list-style: none;
-    }
-
-    .contact-details li {
-      margin: 15px 0;
-      color: #dddddd;
-    }
-
-    .contact-details strong {
-      color: var(--primary);
-      display: inline-block;
-      width: 85px;
+      object-fit: contain;
+      object-position: center;
+      background: var(--dark-3);
     }
 
     .contact-form {
@@ -446,7 +441,7 @@
       display: block;
       margin-bottom: 7px;
       font-size: 14px;
-      color: #dddddd;
+      color: #ddd;
     }
 
     .form-group input,
@@ -454,7 +449,7 @@
     .form-group select {
       width: 100%;
       padding: 14px;
-      color: white;
+      color: var(--white);
       background: var(--dark-2);
       border: 1px solid var(--border);
       border-radius: 5px;
@@ -483,7 +478,7 @@
       padding: 12px;
       text-align: center;
       border-radius: 5px;
-      background: rgba(0, 200, 100, 0.15);
+      background: rgba(0,200,100,.15);
       color: #64ff9b;
     }
 
@@ -496,7 +491,7 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr 1fr;
+      grid-template-columns: 1.2fr .8fr 1fr;
       gap: 40px;
       padding-bottom: 40px;
     }
@@ -532,11 +527,11 @@
       font-size: 13px;
     }
 
-    /* Scroll animation */
+    /* Animation */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
-      transition: 0.8s ease;
+      transition: .8s ease;
     }
 
     .reveal.active {
@@ -623,7 +618,6 @@
 
 <body>
 
-  <!-- Header -->
   <header>
     <div class="container navbar">
       <a href="#home" class="logo">TuneQX<span> Studio</span></a>
@@ -638,7 +632,10 @@
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
         <li>
-          <a class="chat-nav" href="https://wa.me/917300096695" target="_blank" rel="noopener">
+          <a class="chat-nav"
+             href="https://wa.me/917300096695"
+             target="_blank"
+             rel="noopener">
             WhatsApp
           </a>
         </li>
@@ -646,10 +643,12 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <main>
+
+    <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="container hero-grid">
+
         <div class="hero-content reveal">
           <small>YouTube Rights Management</small>
 
@@ -668,7 +667,10 @@
               Get Started
             </a>
 
-            <a href="https://wa.me/917300096695" class="btn btn-outline" target="_blank" rel="noopener">
+            <a href="https://wa.me/917300096695"
+               class="btn btn-outline"
+               target="_blank"
+               rel="noopener">
               Chat on WhatsApp
             </a>
           </div>
@@ -677,19 +679,19 @@
         <div class="hero-image reveal">
           <div class="image-box">
             <img
-              src="images/photo1.jpg.png"
+              src="./images/photo1.jpg.png"
               alt="Hariom Kumar, Founder of TuneQX Studio"
-              onerror="this.parentElement.classList.add('img-missing')"
             >
-            <span>Add images/photo1.jpg.png<br>(hero portrait)</span>
           </div>
         </div>
+
       </div>
     </section>
 
-    <!-- Services -->
+    <!-- Services Section -->
     <section class="section services" id="services">
       <div class="container">
+
         <div class="section-title reveal">
           <span>What We Do</span>
           <h2>Our Services</h2>
@@ -700,6 +702,7 @@
         </div>
 
         <div class="service-grid">
+
           <div class="service-card reveal">
             <div class="service-icon">🛡️</div>
             <h3>Copyright Protection</h3>
@@ -753,30 +756,28 @@
               content-related requirements.
             </p>
           </div>
+
         </div>
       </div>
     </section>
 
-    <!-- About -->
+    <!-- About Section -->
     <section class="section" id="about">
       <div class="container about-grid">
+
         <div class="about-image reveal">
           <img
-            src="images/photo2.jpg.png"
-            alt="Hariom Kumar"
-            onerror="this.parentElement.classList.add('img-missing')"
+            src="./images/photo2.jpg.png"
+            alt="Hariom Kumar, Founder of TuneQX Studio"
           >
-          <span>Add images/photo2.jpg.png<br>(about section)</span>
         </div>
 
         <div class="about-content reveal">
-          <span style="color: var(--primary); letter-spacing: 3px; font-weight: bold;">
-            ABOUT TUNEQX STUDIO
-          </span>
+          <span class="about-label">About TuneQX Studio</span>
 
           <h2>
             Your Music Deserves
-            <span>Better Protection.</span>
+            <span class="highlight">Better Protection.</span>
           </h2>
 
           <p>
@@ -801,12 +802,14 @@
             Work With Us
           </a>
         </div>
+
       </div>
     </section>
 
-    <!-- Stats -->
+    <!-- Stats Section -->
     <section class="stats">
       <div class="container stats-grid">
+
         <div class="stat reveal">
           <h3>100%</h3>
           <p>Creator Focused</p>
@@ -821,12 +824,14 @@
           <h3>Global</h3>
           <p>Digital Reach</p>
         </div>
+
       </div>
     </section>
 
-    <!-- Contact -->
+    <!-- Contact Section -->
     <section class="section contact" id="contact">
       <div class="container">
+
         <div class="section-title reveal">
           <span>Let's Connect</span>
           <h2>Get In Touch</h2>
@@ -837,8 +842,12 @@
         </div>
 
         <div class="contact-grid">
+
           <div class="contact-info reveal">
-            <h2>Let's Grow<br><span style="color: var(--primary);">Together.</span></h2>
+            <h2>
+              Let's Grow<br>
+              <span class="highlight">Together.</span>
+            </h2>
 
             <p>
               Send us your details and our team will get back to you
@@ -855,7 +864,9 @@
 
               <li>
                 <strong>WhatsApp:</strong>
-                <a href="https://wa.me/917300096695" target="_blank" rel="noopener">
+                <a href="https://wa.me/917300096695"
+                   target="_blank"
+                   rel="noopener">
                   +91 73000 96695
                 </a>
               </li>
@@ -868,11 +879,9 @@
 
             <div class="contact-image">
               <img
-                src="images/photo3.jpg.png"
-                alt="Hariom Kumar"
-                onerror="this.parentElement.classList.add('img-missing')"
+                src="./images/photo3.jpg.png"
+                alt="Hariom Kumar, Founder of TuneQX Studio"
               >
-              <span>Add images/photo3.jpg.png<br>(contact section)</span>
             </div>
           </div>
 
@@ -882,8 +891,17 @@
             action="https://formspree.io/f/xqpkgqpr"
             method="POST"
           >
-            <input type="hidden" name="_subject" value="New Inquiry from TuneQX Studio Website">
-            <input type="hidden" name="_captcha" value="false">
+            <input
+              type="hidden"
+              name="_subject"
+              value="New Inquiry from TuneQX Studio Website"
+            >
+
+            <input
+              type="hidden"
+              name="_captcha"
+              value="false"
+            >
 
             <div class="form-group">
               <label for="name">Your Name</label>
@@ -922,12 +940,24 @@
               <label for="service">Select Service</label>
               <select id="service" name="service" required>
                 <option value="">Choose a service</option>
-                <option value="Copyright Protection">Copyright Protection</option>
-                <option value="Revenue Collection">Revenue Collection</option>
-                <option value="Channel Growth">Channel Growth</option>
-                <option value="Music Distribution">Music Distribution</option>
-                <option value="Rights Management">Rights Management</option>
-                <option value="Creator Support">Creator Support</option>
+                <option value="Copyright Protection">
+                  Copyright Protection
+                </option>
+                <option value="Revenue Collection">
+                  Revenue Collection
+                </option>
+                <option value="Channel Growth">
+                  Channel Growth
+                </option>
+                <option value="Music Distribution">
+                  Music Distribution
+                </option>
+                <option value="Rights Management">
+                  Rights Management
+                </option>
+                <option value="Creator Support">
+                  Creator Support
+                </option>
               </select>
             </div>
 
@@ -949,15 +979,19 @@
               Thank you! Your message has been sent successfully.
             </div>
           </form>
+
         </div>
       </div>
     </section>
+
   </main>
 
   <!-- Footer -->
   <footer>
     <div class="container">
+
       <div class="footer-grid">
+
         <div>
           <h3 class="logo">TuneQX<span> Studio</span></h3>
           <p>
@@ -984,19 +1018,25 @@
                 tuneqx.rights@gmail.com
               </a>
             </li>
+
             <li>
-              <a href="https://wa.me/917300096695" target="_blank" rel="noopener">
+              <a href="https://wa.me/917300096695"
+                 target="_blank"
+                 rel="noopener">
                 WhatsApp
               </a>
             </li>
+
             <li>Founder: Hariom Kumar</li>
           </ul>
         </div>
+
       </div>
 
       <div class="copyright">
         © <span id="year"></span> TuneQX Studio. All Rights Reserved.
       </div>
+
     </div>
   </footer>
 
@@ -1018,21 +1058,20 @@
     // Scroll reveal animation
     const revealElements = document.querySelectorAll(".reveal");
 
-    const revealOnScroll = function () {
+    function revealOnScroll() {
       revealElements.forEach(function (element) {
         const elementTop = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
 
-        if (elementTop < windowHeight - 80) {
+        if (elementTop < window.innerHeight - 80) {
           element.classList.add("active");
         }
       });
-    };
+    }
 
     window.addEventListener("scroll", revealOnScroll);
     revealOnScroll();
 
-    // Form submission message
+    // Form message
     const contactForm = document.getElementById("contactForm");
     const formMessage = document.getElementById("form-message");
 
@@ -1043,7 +1082,8 @@
     });
 
     // Current year
-    document.getElementById("year").textContent = new Date().getFullYear();
+    document.getElementById("year").textContent =
+      new Date().getFullYear();
   </script>
 
 </body>
