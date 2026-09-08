@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.add('js');</script>
+<title>TuneQX Studio — YouTube Rights Management</title>
+<meta name="description" content="TuneQX Studio helps creators and rights holders manage YouTube copyright claims, protect original content, and keep monetization running smoothly. Founded by Hariom Kumar.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230E0B12'/%3E%3Ctext x='50' y='68' font-family='Georgia, serif' font-size='58' fill='%23C9A15C' text-anchor='middle'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0E0B12;
+    --surface:#171320;
+    --surface-2:#1F1A2B;
+    --gold:#C9A15C;
+    --gold-soft:#DDBE85;
+    --wine:#8A2E4E;
+    --text:#F4F1EA;
+    --text-muted:#A79FB0;
+    --line:rgba(244,241,234,0.10);
+    --line-strong:rgba(244,241,234,0.16);
+    --radius:6px;
+    --max:1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Manrope',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    line-height:1.15;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  p{margin:0;}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+  section{padding:120px 0;scroll-margin-top:90px;}
+  .section-head{max-width:600px;margin-bottom:56px;}
+  .section-head h2{font-size:clamp(28px,3.6vw,40px);margin-bottom:14px;}
+  .section-head p{color:var(--text-muted);font-size:17px;max-width:46ch;}
+  .kicker{
+    display:block;
+    font-size:14px;
+    color:var(--gold);
+    margin-bottom:12px;
+    font-weight:600;
+  }
+
+  /* Focus visibility */
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 26px;
+    border-radius:var(--radius);
+    font-family:'Manrope',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:background .25s ease, border-color .25s ease, color .25s ease, transform .2s ease;
+  }
+  .btn-primary{background:var(--gold);color:#1A1410;}
+  .btn-primary:hover{background:var(--gold-soft);transform:translateY(-1px);}
+  .btn-ghost{border-color:var(--line-strong);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-sm{padding:10px 18px;font-size:14px;}
+
+  /* Nav */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 0;
+    transition:background .3s ease, padding .3s ease, border-color .3s ease;
+    border-bottom:1px solid transparent;
+  }
+  header.scrolled{
+    background:rgba(14,11,18,0.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Fraunces',serif;font-size:21px;font-weight:600;letter-spacing:-0.01em;}
+  .logo span{color:var(--gold);}
+  .nav-links{display:flex;gap:34px;list-style:none;margin:0;padding:0;}
+  .nav-links a{font-size:15px;color:var(--text-muted);transition:color .2s ease;position:relative;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:flex;align-items:center;gap:14px;}
+  .icon-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:40px;height:40px;border-radius:50%;
+    border:1px solid var(--line-strong);color:var(--text);
+    transition:border-color .2s ease, color .2s ease;
+  }
+  .icon-btn:hover{border-color:var(--gold);color:var(--gold);}
+  .menu-toggle{display:none;background:none;border:none;color:var(--text);cursor:pointer;padding:6px;}
+
+  /* Hero */
+  .hero{
+    padding:180px 0 100px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    top:-200px;right:-160px;
+    width:640px;height:640px;
+    background:radial-gradient(circle,rgba(201,161,92,0.14) 0%, rgba(138,46,78,0.08) 45%, transparent 70%);
+    pointer-events:none;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:60px;
+    align-items:center;
+    position:relative;
+  }
+  .hero-copy h1{
+    font-size:clamp(38px,5.2vw,60px);
+    margin-bottom:22px;
+  }
+  .hero-copy p.lede{
+    font-size:18px;
+    color:var(--text-muted);
+    max-width:46ch;
+    margin-bottom:36px;
+  }
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+  .hero-trust{font-size:14px;color:var(--text-muted);}
+  .hero-trust b{color:var(--text);font-weight:600;}
+
+  .hero-portrait{position:relative;display:flex;justify-content:center;}
+  .portrait-frame{
+    position:relative;
+    width:320px;height:380px;
+  }
+  .portrait-ring{position:absolute;inset:-36px;pointer-events:none;}
+  .portrait-ring circle{
+    fill:none;stroke:var(--gold);stroke-width:1.2;opacity:.65;
+    stroke-dasharray:566;stroke-dashoffset:566;
+    animation:draw-ring 1.6s ease forwards .3s;
+  }
+  .photo-frame{
+    width:100%;height:100%;
+    border-radius:10px;
+    overflow:hidden;
+    background:linear-gradient(150deg,var(--surface-2),var(--surface));
+    border:1px solid var(--line-strong);
+    position:relative;
+  }
+  .photo-frame img{width:100%;height:100%;object-fit:cover;}
+  .photo-frame.img-missing img{display:none;}
+  .photo-frame .placeholder-fallback{
+    display:none;
+    position:absolute;inset:0;
+    align-items:center;justify-content:center;
+    flex-direction:column;gap:10px;
+    color:var(--text-muted);
+    text-align:center;
+    padding:20px;
+  }
+  .photo-frame.img-missing .placeholder-fallback{display:flex;}
+  .placeholder-fallback svg{width:44px;height:44px;color:var(--gold);opacity:.8;}
+  .placeholder-fallback span{font-size:12.5px;line-height:1.5;}
+
+  /* Trust strip */
+  .trust-strip{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:36px 0;
+  }
+  .trust-strip .wrap{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .trust-item{flex:1;min-width:180px;padding:0 20px;position:relative;}
+  .trust-item + .trust-item{border-left:1px solid var(--line);}
+  .trust-item .val{font-family:'Fraunces',serif;font-size:30px;color:var(--gold);display:block;margin-bottom:6px;}
+  .trust-item .lbl{font-size:14px;color:var(--text-muted);}
+
+  /* Services */
+  .service-list{border-top:1px solid var(--line);}
+  .service-row{
+    display:flex;
+    align-items:flex-start;
+    gap:26px;
+    padding:32px 0;
+    border-bottom:1px solid var(--line);
+    transition:background .25s ease, padding-left .25s ease;
+  }
+  .service-row:hover{background:rgba(244,241,234,0.02);padding-left:10px;}
+  .service-icon{
+    flex:none;
+    width:48px;height:48px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--gold);
+    transition:border-color .25s ease;
+  }
+  .service-row:hover .service-icon{border-color:var(--gold);}
+  .service-icon svg{width:22px;height:22px;}
+  .service-text h3{font-size:20px;font-weight:500;margin-bottom:6px;}
+  .service-text p{color:var(--text-muted);font-size:15.5px;max-width:56ch;}
+
+  /* About */
+  .about-inner{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:64px;
+    align-items:center;
+  }
+  .about-photo .photo-frame{width:100%;aspect-ratio:4/5;height:auto;border-radius:8px;}
+  .about-copy .name-line{font-size:15px;color:var(--gold);font-weight:600;margin-bottom:16px;}
+  .about-copy h2{font-size:clamp(26px,3.2vw,34px);margin-bottom:20px;}
+  .about-copy p{color:var(--text-muted);font-size:16.5px;max-width:56ch;margin-bottom:16px;}
+  .about-copy p:last-child{margin-bottom:0;}
+
+  /* Process */
+  .process-strip{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:0;
+    position:relative;
+  }
+  .process-strip::before{
+    content:'';
+    position:absolute;
+    top:23px;left:0;right:0;
+    height:1px;
+    background:var(--line-strong);
+  }
+  .process-step{position:relative;padding-right:24px;}
+  .process-num{
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--bg);
+    border:1px solid var(--gold);
+    color:var(--gold);
+    font-family:'Fraunces',serif;
+    font-size:17px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:2;
+    margin-bottom:22px;
+  }
+  .process-step h3{font-size:18px;font-weight:500;margin-bottom:8px;}
+  .process-step p{font-size:15px;color:var(--text-muted);}
+
+  /* FAQ */
+  .faq-list{max-width:720px;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{
+    list-style:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:24px 4px;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:500;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item .plus{
+    flex:none;width:22px;height:22px;position:relative;
+  }
+  .faq-item .plus::before,.faq-item .plus::after{
+    content:'';position:absolute;background:var(--gold);
+    top:50%;left:50%;transform:translate(-50%,-50%);
+    transition:transform .25s ease;
+  }
+  .faq-item .plus::before{width:14px;height:1.4px;}
+  .faq-item .plus::after{width:1.4px;height:14px;}
+  .faq-item[open] .plus::after{transform:translate(-50%,-50%) rotate(90deg);opacity:0;}
+  .faq-item .faq-a{padding:0 4px 26px;color:var(--text-muted);font-size:15.5px;max-width:62ch;}
+
+  /* Contact */
+  .contact-inner{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:56px;
+  }
+  .contact-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:32px;
+  }
+  .contact-side .photo-frame{width:100%;aspect-ratio:4/5;height:auto;border-radius:8px;margin-bottom:24px;}
+  .contact-detail{display:flex;align-items:center;gap:14px;margin-bottom:16px;font-size:15px;}
+  .contact-detail:last-child{margin-bottom:0;}
+  .contact-detail .ic{
+    flex:none;width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;color:var(--gold);
+  }
+  .contact-detail .ic svg{width:17px;height:17px;}
+  .contact-detail a{color:var(--text);transition:color .2s ease;}
+  .contact-detail a:hover{color:var(--gold);}
+
+  .field{margin-bottom:22px;}
+  .field label{display:block;font-size:13.5px;color:var(--text-muted);margin-bottom:8px;}
+  .field input,.field textarea{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line-strong);
+    padding:10px 2px;
+    font-family:'Manrope',sans-serif;
+    font-size:15.5px;
+    color:var(--text);
+    resize:vertical;
+    transition:border-color .2s ease;
+  }
+  .field input:focus,.field textarea:focus{border-color:var(--gold);outline:none;}
+  .field-row{display:flex;gap:20px;}
+  .field-row .field{flex:1;}
+  .form-msg{font-size:14px;margin-top:6px;min-height:20px;}
+  .form-msg.ok{color:#8FBF8F;}
+  .form-msg.err{color:#D98080;}
+  .hp{position:absolute;left:-9999px;opacity:0;}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);padding:64px 0 28px;}
+  .footer-inner{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:40px;
+    margin-bottom:48px;
+  }
+  .footer-brand .logo{margin-bottom:14px;}
+  .footer-brand p{color:var(--text-muted);font-size:15px;max-width:36ch;}
+  .footer-col h4{font-size:14px;color:var(--text-muted);font-weight:600;margin-bottom:16px;}
+  .footer-col ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .footer-col a{font-size:15px;color:var(--text);transition:color .2s ease;}
+  .footer-col a:hover{color:var(--gold);}
+  .footer-bottom{
+    border-top:1px solid var(--line);
+    padding-top:24px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    font-size:13.5px;color:var(--text-muted);
+  }
+
+  /* Reveal (progressive enhancement: only hides content once JS confirms it can reveal it again) */
+  html.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  @keyframes draw-ring{to{stroke-dashoffset:0;}}
+  @keyframes fade-up{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .hero-copy > *{animation:fade-up .8s ease both;}
+  .hero-copy h1{animation-delay:.05s;}
+  .hero-copy p.lede{animation-delay:.18s;}
+  .hero-actions{animation-delay:.3s;}
+  .hero-trust{animation-delay:.4s;}
+  .hero-portrait{animation:fade-up 1s ease both .2s;}
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{animation-duration:.001s !important;animation-delay:0s !important;transition-duration:.001s !important;}
+    .reveal{opacity:1;transform:none;}
+    .portrait-ring circle{stroke-dashoffset:0;}
+  }
+
+  /* Mobile */
+  @media (max-width:920px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-portrait{order:-1;margin-bottom:20px;}
+    .portrait-frame{width:220px;height:260px;}
+    .about-inner{grid-template-columns:1fr;}
+    .about-photo{max-width:280px;}
+    .contact-inner{grid-template-columns:1fr;}
+    .process-strip{grid-template-columns:1fr 1fr;row-gap:40px;}
+    .process-strip::before{display:none;}
+    .footer-inner{grid-template-columns:1fr 1fr;}
+    .footer-brand{grid-column:1 / -1;}
+  }
+  @media (max-width:760px){
+    section{padding:80px 0;}
+    .hero{padding:150px 0 70px;}
+    .nav-links{
+      position:fixed;top:0;right:0;height:100vh;width:72%;max-width:320px;
+      background:var(--surface);
+      flex-direction:column;
+      padding:100px 32px 32px;
+      gap:26px;
+      transform:translateX(100%);
+      transition:transform .35s ease;
+      border-left:1px solid var(--line-strong);
+    }
+    .nav-links.open{transform:translateX(0);}
+    .menu-toggle{display:block;position:relative;z-index:101;}
+    .nav-cta .icon-btn.chat-nav{display:none;}
+    .menu-toggle .ln{transition:transform .3s ease, opacity .3s ease;transform-origin:center;}
+    .menu-toggle.open .ln-top{transform:translateY(5px) rotate(45deg);}
+    .menu-toggle.open .ln-mid{opacity:0;}
+    .menu-toggle.open .ln-bot{transform:translateY(-5px) rotate(-45deg);}
+    .nav-scrim{
+      display:none;
+      position:fixed;inset:0;
+      background:rgba(8,6,10,0.55);
+      z-index:90;
+    }
+    .nav-scrim.open{display:block;}
+    .field-row{flex-direction:column;gap:0;}
+    .trust-item + .trust-item{border-left:none;border-top:1px solid var(--line);padding-top:20px;}
+    .trust-strip .wrap{flex-direction:column;}
+    .process-strip{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="wrap nav-inner">
+    <a href="#home" class="logo">TuneQX <span>Studio</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <!-- Update the WhatsApp number below (country code + number, no spaces or +) -->
+      <a class="icon-btn chat-nav" href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M4 20l1.3-4A8 8 0 1112 20a8 8 0 01-4-1.1L4 20z"/><path d="M8.5 9.5c0 3.6 2.4 6 6 6" /></svg>
+      </a>
+      <a href="#contact" class="btn btn-primary btn-sm">Get Started</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+        <svg id="menuIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" width="24" height="24">
+          <line class="ln ln-top" x1="3" y1="7" x2="21" y2="7"/>
+          <line class="ln ln-mid" x1="3" y1="12" x2="21" y2="12"/>
+          <line class="ln ln-bot" x1="3" y1="17" x2="21" y2="17"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="nav-scrim" id="navScrim"></div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <h1>Your channel's rights,<br>properly managed.</h1>
+        <p class="lede">TuneQX Studio helps creators and rights holders manage copyright claims, protect original content, and keep monetization running smoothly on YouTube.</p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary">Get Started</a>
+          <a href="#services" class="btn btn-ghost">Our Services</a>
+        </div>
+        <p class="hero-trust">Working directly with <b>independent creators</b> and <b>channel owners</b>.</p>
+      </div>
+      <div class="hero-portrait">
+        <div class="portrait-frame">
+          <svg class="portrait-ring" viewBox="0 0 392 452" aria-hidden="true">
+            <circle cx="356" cy="36" r="90"/>
+          </svg>
+          <!-- Replace with images/photo1.jpg (Hariom Kumar, hero portrait) -->
+          <div class="photo-frame">
+            <img src="images/photo1.jpg" alt="Hariom Kumar, Founder of TuneQX Studio" onerror="this.parentElement.classList.add('img-missing')">
+            <div class="placeholder-fallback">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+              <span>Add images/photo1.jpg<br>(hero portrait)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="wrap">
+      <div class="trust-item">
+        <span class="val">6</span>
+        <span class="lbl">Core rights &amp; copyright services</span>
+      </div>
+      <div class="trust-item">
+        <span class="val">24–48 hrs</span>
+        <span class="lbl">Typical response time on new enquiries</span>
+      </div>
+      <div class="trust-item">
+        <span class="val">1:1</span>
+        <span class="lbl">Direct support, no call centre</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>What we handle</h2>
+        <p>Rights and copyright support built around how creators actually use YouTube — not generic legal boilerplate.</p>
+      </div>
+      <div class="service-list">
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>YouTube Rights Management</h3>
+            <p>Ownership, licensing, and rights setup handled correctly from the start, so there's no ambiguity later.</p>
+          </div>
+        </div>
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14a1 1 0 01-1 1H7a1 1 0 01-1-1V4a1 1 0 011-1z"/><path d="M14 3v4h4"/><circle cx="11" cy="14.2" r="2.4"/><path d="M12.9 16l1.8 1.8"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>Copyright Claim Management</h3>
+            <p>Claims reviewed, disputed, or resolved without putting your channel or watch time at risk.</p>
+          </div>
+        </div>
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/><rect x="9.4" y="11" width="5.2" height="4.2" rx="0.6"/><path d="M10.3 11V9.5a1.7 1.7 0 013.4 0V11"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>Content Protection</h3>
+            <p>Ongoing monitoring so your original work isn't reused or reposted without permission.</p>
+          </div>
+        </div>
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="12" height="17" rx="1.5"/><path d="M9 3.5h6a1 1 0 011 1V6H8V4.5a1 1 0 011-1z"/><path d="M9 11h6M9 14h6M9 17h3.5"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>Rights Administration</h3>
+            <p>Metadata, ownership splits, and documentation kept accurate and current across your catalogue.</p>
+          </div>
+        </div>
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7.5"/><path d="M9 13.2l3-3 3 3M12 10v6"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>Content Monetization</h3>
+            <p>Monetization set up and maintained properly, so revenue isn't left on the table by an unresolved claim.</p>
+          </div>
+        </div>
+        <div class="service-row">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13a8 8 0 0116 0"/><rect x="3.3" y="13" width="4" height="6" rx="1.5"/><rect x="16.7" y="13" width="4" height="6" rx="1.5"/><path d="M20.7 19c0 2-2 3-5 3"/></svg>
+          </div>
+          <div class="service-text">
+            <h3>Channel &amp; Video Rights Support</h3>
+            <p>One-on-one help for channel-specific rights issues as they come up, not a generic ticket queue.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="background:var(--surface);">
+    <div class="wrap about-inner">
+      <div class="about-photo reveal">
+        <!-- Replace with images/photo2.jpg (Hariom Kumar, about section) -->
+        <div class="photo-frame">
+          <img src="images/photo2.jpg" alt="Hariom Kumar" onerror="this.parentElement.classList.add('img-missing')">
+          <div class="placeholder-fallback">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+            <span>Add images/photo2.jpg<br>(about section)</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <span class="name-line">Meet Hariom Kumar</span>
+        <h2>About the founder</h2>
+        <p>Hariom Kumar founded TuneQX Studio to give independent creators and rights holders the same level of rights management larger channels take for granted.</p>
+        <p>That means clear communication, realistic timelines, and no guesswork about where a claim or a monetization issue actually stands — handled directly, one channel at a time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>How it works</h2>
+        <p>A straightforward path from first message to a resolved channel.</p>
+      </div>
+      <div class="process-strip">
+        <div class="process-step">
+          <div class="process-num">1</div>
+          <h3>Share your details</h3>
+          <p>Tell us about your channel and the specific issue you're facing.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">2</div>
+          <h3>Rights review</h3>
+          <p>We check ownership, active claims, and your current monetization status.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">3</div>
+          <h3>Action plan</h3>
+          <p>You get a clear plan — dispute, licensing fix, or monetization setup.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">4</div>
+          <h3>Ongoing support</h3>
+          <p>We stay on it until it's resolved, and keep monitoring afterward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" style="background:var(--surface);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Common questions</h2>
+        <p>If your question isn't here, send it through the contact form below.</p>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary>What exactly does rights management cover?<span class="plus"></span></summary>
+          <div class="faq-a">It covers how your content is claimed, licensed, and monetized on YouTube — from setting up ownership correctly to resolving disputes when something is claimed incorrectly.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How long does a copyright claim usually take to resolve?<span class="plus"></span></summary>
+          <div class="faq-a">It depends on the type of claim and the claimant, but most straightforward disputes move within a couple of weeks once we have full details of your case.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Do you work with channels outside India?<span class="plus"></span></summary>
+          <div class="faq-a">Yes. Rights and copyright issues on YouTube aren't tied to a single country, and we work with creators wherever they're based.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Is there a minimum channel size to get started?<span class="plus"></span></summary>
+          <div class="faq-a">No. We work with channels at any stage, from just getting started to established, monetized channels.</div>
+        </details>
+        <details class="faq-item">
+          <summary>How do I get started?<span class="plus"></span></summary>
+          <div class="faq-a">Fill in the contact form below with a short description of what's going on, and we'll get back to you directly to walk through next steps.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Get in touch</h2>
+        <p>Tell us what's going on with your channel and we'll get back to you.</p>
+      </div>
+      <div class="contact-inner">
+        <div class="contact-side reveal">
+          <!-- Replace with images/photo3.jpg (contact section) -->
+          <div class="photo-frame">
+            <img src="images/photo3.jpg" alt="Hariom Kumar" onerror="this.parentElement.classList.add('img-missing')">
+            <div class="placeholder-fallback">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+              <span>Add images/photo3.jpg<br>(contact section)</span>
+            </div>
+          </div>
+          <div class="contact-detail">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            <!-- Update with your real business email -->
+            <a href="mailto:hello@tuneqxstudio.com">hello@tuneqxstudio.com</a>
+          </div>
+          <div class="contact-detail">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1.3-4A8 8 0 1112 20a8 8 0 01-4-1.1L4 20z"/><path d="M8.5 9.5c0 3.6 2.4 6 6 6"/></svg></span>
+            <!-- Update the WhatsApp number below -->
+            <a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">Chat on WhatsApp</a>
+          </div>
+          <div class="contact-detail">
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-11.5A7 7 0 105 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></span>
+            <span>Based in India, working with creators everywhere</span>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <!--
+            Sign up free at https://formspree.io, create a form, and replace
+            YOUR_FORM_ID below with the ID they give you.
+          -->
+          <form id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <div class="field">
+              <label for="name">Full Name *</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="mobile">Mobile Number *</label>
+                <input type="tel" id="mobile" name="mobile" required>
+              </div>
+              <div class="field">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email">
+              </div>
+            </div>
+            <div class="field">
+              <label for="message">Message *</label>
+              <textarea id="message" name="message" rows="4" required></textarea>
+            </div>
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off">
+            <button type="submit" class="btn btn-primary" id="submitBtn">Send Message</button>
+            <p class="form-msg" id="formMsg"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">TuneQX <span>Studio</span></div>
+        <p>YouTube rights management, built for creators — founded by Hariom Kumar.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@tuneqxstudio.com">hello@tuneqxstudio.com</a></li>
+          <li><a href="https://wa.me/91XXXXXXXXXX" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 TuneQX Studio. All rights reserved.</span>
+      <span>Founded by Hariom Kumar</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header scroll state
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 30);
+  }, { passive:true });
+
+  // Mobile menu
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const navScrim = document.getElementById('navScrim');
+  function setMenu(open){
+    navLinks.classList.toggle('open', open);
+    menuToggle.classList.toggle('open', open);
+    navScrim.classList.toggle('open', open);
+    menuToggle.setAttribute('aria-expanded', open);
+  }
+  menuToggle.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
+  navScrim.addEventListener('click', () => setMenu(false));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => setMenu(false));
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Contact form via Formspree (AJAX so the page never navigates away)
+  const form = document.getElementById('contactForm');
+  const formMsg = document.getElementById('formMsg');
+  const submitBtn = document.getElementById('submitBtn');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    formMsg.textContent = '';
+    formMsg.className = 'form-msg';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        formMsg.textContent = "Thanks — we'll get back to you within 24–48 hours.";
+        formMsg.classList.add('ok');
+        form.reset();
+      } else {
+        throw new Error('Form endpoint not set up yet');
+      }
+    } catch (err) {
+      formMsg.textContent = 'Something went wrong. Please try again or email us directly.';
+      formMsg.classList.add('err');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message';
+    }
+  });
+</script>
+
+</body>
+</html>
